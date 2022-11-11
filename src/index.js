@@ -1,17 +1,62 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {List} from './list.js'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = { 
+            date: new Date(),
+            theme: true,
+            nubmers: [1,2,3,4,5]
+        }
+        this.changeTheme = this.changeTheme.bind(this)
+    }
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    componentDidMount() {
+        this.timer = setInterval(()=>this.tick(),1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer)
+    }
+
+    changeTheme() {
+        this.setState(state=>({
+            theme: !state.theme
+        }))
+    }
+
+    tick() {
+        this.setState({
+            date: new Date()
+        })
+    }
+
+    render() {
+        // Условный рендеринг
+        const theme = this.state.theme
+        let themeElement;
+        if(theme) {
+            themeElement = <p>Темная тема</p>
+        } else {
+            themeElement = <p>Светлая тема</p>
+        }
+
+        return (
+            <div>
+                <h1>Hello, world</h1>
+                <p>Time is {this.state.date.toLocaleTimeString()}</p>
+                <button onClick={this.changeTheme}>Change Theme</button>
+                {themeElement}
+                <List numbers={this.state.nubmers}/>
+            </div>
+        )
+    }
+}
+
+const root = ReactDOM.createRoot(
+    document.getElementById('root')
+)
+root.render(<App/>)
