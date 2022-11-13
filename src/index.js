@@ -38,7 +38,12 @@ class App extends React.Component {
     render() {
         const deleted = this.state.deletedTodos
         return (
-            <div>
+            <div className='mt-4'>
+                <Form 
+                    todoTitle={this.state.todoTitle}
+                    onTitleChange={this.onTitleChange}
+                    handleSubmit={this.handleSubmit}
+                />
                 <List
                     title={"Список задач"}
                     todos={this.state.todos}
@@ -53,11 +58,6 @@ class App extends React.Component {
                         isList={false}
                     />
                     : null}
-                <Form 
-                    todoTitle={this.state.todoTitle}
-                    onTitleChange={this.onTitleChange}
-                    handleSubmit={this.handleSubmit}
-                />
             </div>
         )
     }

@@ -19,7 +19,7 @@ export class Form extends React.Component {
 
     render() {
         return(
-            <div>
+            <div className="mb-4">
                 <h2>Добавить задачу</h2>
                 <form onSubmit={this.handleSubmit} className='row w-50'>
                     <label className="col-3" htmlFor='input'>Текст задачи:</label>
