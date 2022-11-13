@@ -8,10 +8,13 @@ class App extends React.Component {
         super(props)
         this.state = { 
             todos: ['Задача','Ещё одна задача','И ещё одна задача'],
+            deletedTodos:[],
             todoTitle: ''
         }
         this.onTitleChange = this.onTitleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
+        this.handleRestore = this.handleRestore.bind(this)
     }
     onTitleChange(title) {
         this.setState({todoTitle:title})
@@ -21,11 +24,35 @@ class App extends React.Component {
             this.setState({todos:[...this.state.todos, this.state.todoTitle],todoTitle:''})
         }
     }
-
+    handleDelete(id) {
+        const _todos = this.state.todos.filter((todo,index)=>id!==index);
+        this.state.deletedTodos.push(this.state.todos[id])
+        this.setState({todos:_todos})
+    }
+    handleRestore(id) {
+        this.setState({
+            todos:[...this.state.todos,this.state.deletedTodos[id]],
+            deletedTodos:[...this.state.deletedTodos.filter((todo,index)=>index!==id)]
+        })
+    }
     render() {
+        const deleted = this.state.deletedTodos
         return (
             <div>
-                <List todos={this.state.todos}/>
+                <List
+                    title={"Список задач"}
+                    todos={this.state.todos}
+                    handleChange={this.handleDelete}
+                    isList={true}
+                    />
+                {deleted.length > 0 ?
+                    <List
+                        title={"Удаленные задачи"}
+                        todos={deleted}
+                        handleChange={this.handleRestore}
+                        isList={false}
+                    />
+                    : null}
                 <Form 
                     todoTitle={this.state.todoTitle}
                     onTitleChange={this.onTitleChange}

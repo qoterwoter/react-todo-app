@@ -19,13 +19,25 @@ export class Form extends React.Component {
 
     render() {
         return(
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Текст задачи:
-                    <input type='text' value={this.props.todoTitle} onChange={this.handleChange}></input>
-                </label>
-                <input type='submit' value="Отправить" />
-            </form>
+            <div>
+                <h2>Добавить задачу</h2>
+                <form onSubmit={this.handleSubmit} className='row w-50'>
+                    <label className="col-3" htmlFor='input'>Текст задачи:</label>
+                    <input 
+                        id='input'
+                        type='text' 
+                        value={this.props.todoTitle} 
+                        onChange={this.handleChange}
+                        className='form-control col'
+                    />
+                    <input 
+                        type='submit' 
+                        value="Отправить" 
+                        className="btn btn-primary col-3"
+                    />
+                </form>
+            </div>
+
         )
     }
 }
