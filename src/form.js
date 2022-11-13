@@ -1,5 +1,5 @@
 import React from "react"
-
+import { Button,  Grid, TextField, Typography } from "@mui/material";
 export class Form extends React.Component {
     constructor(props) {
         super(props)
@@ -19,24 +19,22 @@ export class Form extends React.Component {
 
     render() {
         return(
-            <div className="mb-4">
-                <h2>Добавить задачу</h2>
-                <form onSubmit={this.handleSubmit} className='row w-50'>
-                    <label className="col-3" htmlFor='input'>Текст задачи:</label>
-                    <input 
-                        id='input'
-                        type='text' 
-                        value={this.props.todoTitle} 
-                        onChange={this.handleChange}
-                        className='form-control col'
-                    />
-                    <input 
-                        type='submit' 
-                        value="Отправить" 
-                        className="btn btn-primary col-3"
-                    />
-                </form>
-            </div>
+            <Grid container spacing={2}>
+                <Grid item xs={12}><Typography variant='h4'>Добавить задачу</Typography></Grid>
+                <Grid item xs={6}><TextField 
+                    id='input'
+                    value={this.props.todoTitle} 
+                    onChange={this.handleChange}
+                    label = 'Текст задачи'
+                    variant="outlined"
+                    size="small"
+                /></Grid>
+                <Grid item xs={1}><Button 
+                    variant="contained"
+                    color='success'
+                    onClick={this.handleSubmit}
+                >Отправить</Button></Grid>
+            </Grid>
 
         )
     }

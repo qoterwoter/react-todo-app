@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import {List} from './list'
+import './style.sass';
+import {TodoList} from './list'
 import {Form} from './form'
+import { Container } from '@mui/system';
+
 class App extends React.Component {
     constructor(props) {
         super(props)
@@ -15,6 +17,7 @@ class App extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
         this.handleRestore = this.handleRestore.bind(this)
+        this.handleRename = this.handleRename.bind(this)
     }
     onTitleChange(title) {
         this.setState({todoTitle:title})
@@ -35,30 +38,34 @@ class App extends React.Component {
             deletedTodos:[...this.state.deletedTodos.filter((todo,index)=>index!==id)]
         })
     }
+    handleRename(id) {
+        console.log(id)
+    }
     render() {
         const deleted = this.state.deletedTodos
         return (
-            <div className='mt-4'>
+            <Container>
                 <Form 
                     todoTitle={this.state.todoTitle}
                     onTitleChange={this.onTitleChange}
                     handleSubmit={this.handleSubmit}
                 />
-                <List
+                <TodoList
                     title={"Список задач"}
                     todos={this.state.todos}
                     handleChange={this.handleDelete}
+                    handleRename={this.handleRename}
                     isList={true}
                     />
                 {deleted.length > 0 ?
-                    <List
+                    <TodoList
                         title={"Удаленные задачи"}
                         todos={deleted}
                         handleChange={this.handleRestore}
                         isList={false}
                     />
                     : null}
-            </div>
+            </Container>
         )
     }
 }
