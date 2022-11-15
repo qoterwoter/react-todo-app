@@ -1,58 +1,53 @@
 import React from 'react';
-import { Grid, Button,  Typography, List, ListItem, Avatar, ListItemIcon, ListItemText, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { Grid, Typography, List } from '@mui/material';
+
+import { ItemOfList } from './listItem';
 export class TodoList extends React.Component {
     constructor(props) {
         super(props)
+
+        this.state= {
+            isEdit: this.props.todos.map(val=>true)
+        }
+        
         this.handleChange = this.handleChange.bind(this)
         this.handleRename = this.handleRename.bind(this)
+        this.handleTurnEdit = this.handleTurnEdit.bind(this)
     }
-
-    handleChange(id) {
-        this.props.handleChange(id);
+    handleChange(index) {
+        this.props.handleChange(index);
     }
-    handleRename(event) {
-        console.log(event.target.parentNode.querySelector('Typography'))
-        // this.props.handleRename(id);
+    handleRename(index,todo) {
+        this.props.handleRename(index,todo);
     }
-
+    handleTurnEdit(index) {
+        this.setState({isEdit:this.state.isEdit.map((todo,id)=>{
+            return id === index ? !todo : todo
+        })})
+    }
     render() {
         const todos = this.props.todos
-        const isList = this.props.isList
+        const isEdit = this.state.isEdit
+
+        const list = todos.map(todo=>{
+            const index = todos.indexOf(todo)
+            return <ItemOfList
+                handleTurnEdit={this.handleTurnEdit}
+                handleRename={this.handleRename}
+                handleChange={this.handleChange}
+                isEdit={isEdit}
+                index={index}
+                todo={todo}
+                isList={this.props.isList}
+            />}) 
+        
         return (
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{background:'#f2f2f2','border-radius':'10px'}}>
                 <Grid item xs={12}>
                     <Typography variant='h4'>{this.props.title}</Typography>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <List>{
-                    todos.map(todo=>
-                        <ListItem
-                            key={todos.indexOf(todo)}
-                            spacing={2}>
-                            <ListItemText>
-                                <Typography variant='p'>{todo}</Typography>
-                            </ListItemText>
-                            <ListItemIcon><IconButton>{isList ? 
-                                <DeleteIcon
-                                    variant='filled' 
-                                    color='error'
-                                    onClick={()=>{this.handleChange(todos.indexOf(todo))}}/> :
-                                <RestartAltIcon
-                                    variant='contained' 
-                                    color='primary'
-                                    onClick={()=>{this.handleChange(todos.indexOf(todo))}}
-                                />
-                            }</IconButton></ListItemIcon>
-                            {/* {isList ? 
-                            <Button
-                                variant='contained'
-                                onClick={this.handleRename}
-                                >Изменить</Button> : null} */}
-                        </ListItem>
-                        )    
-                    }</List>
+                <Grid item xs={12} md={12}>
+                    <List>{list}</List>
                 </Grid>
             </Grid>
         )

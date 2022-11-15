@@ -21,7 +21,7 @@ export class Form extends React.Component {
         return(
             <Grid container spacing={2}>
                 <Grid item xs={12}><Typography variant='h4'>Добавить задачу</Typography></Grid>
-                <Grid item xs={6}><TextField 
+                <Grid item xs={4}><TextField 
                     id='input'
                     value={this.props.todoTitle} 
                     onChange={this.handleChange}

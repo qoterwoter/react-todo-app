@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './style.sass';
 import {TodoList} from './list'
 import {Form} from './form'
-import { Container } from '@mui/system';
+import { Grid } from '@mui/material';
 
 class App extends React.Component {
     constructor(props) {
@@ -38,34 +38,39 @@ class App extends React.Component {
             deletedTodos:[...this.state.deletedTodos.filter((todo,index)=>index!==id)]
         })
     }
-    handleRename(id) {
-        console.log(id)
+    handleRename(id,newTodo) {
+        this.setState({todos:this.state.todos.map((todo,index)=>{
+            return id === index ? newTodo : todo
+        })})
+        console.log(id,newTodo)
     }
     render() {
         const deleted = this.state.deletedTodos
+        const todos = this.state.todos
         return (
-            <Container>
-                <Form 
-                    todoTitle={this.state.todoTitle}
-                    onTitleChange={this.onTitleChange}
-                    handleSubmit={this.handleSubmit}
-                />
-                <TodoList
+            <Grid container spacing={4} columns={13} sx={{margin:'5px 10px'}}> 
+                {todos.length > 0 ? 
+                <Grid item xs={6}><TodoList
                     title={"Список задач"}
                     todos={this.state.todos}
                     handleChange={this.handleDelete}
                     handleRename={this.handleRename}
                     isList={true}
-                    />
+                /></Grid> : null}
                 {deleted.length > 0 ?
-                    <TodoList
-                        title={"Удаленные задачи"}
-                        todos={deleted}
-                        handleChange={this.handleRestore}
-                        isList={false}
-                    />
-                    : null}
-            </Container>
+                <Grid item xs={6}><TodoList
+                    title={"Удаленные задачи"}
+                    todos={deleted}
+                    handleChange={this.handleRestore}
+                    isList={false}
+                /></Grid>
+                : null}
+                <Grid item xs={13}><Form 
+                    todoTitle={this.state.todoTitle}
+                    onTitleChange={this.onTitleChange}
+                    handleSubmit={this.handleSubmit}
+                /></Grid>
+            </Grid>
         )
     }
 }
