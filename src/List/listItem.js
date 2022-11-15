@@ -30,7 +30,7 @@ export class ItemOfList extends React.Component {
             spacing={2}>
             <ListItemText>
                 {
-                isEdit[index] ?
+                isEdit[index] || !isList ?
                 <Typography variant='p'>{todo}</Typography> : 
                 <TextField 
                     label="Введите текст задачи"
@@ -47,11 +47,11 @@ export class ItemOfList extends React.Component {
                     variant='contained' 
                     color='success'/>
             }</IconButton></ListItemIcon>
-            <ListItemIcon><IconButton 
+            {isList && <ListItemIcon><IconButton 
                 onClick={()=>{this.handleTurnEdit(index)}}>
                 <EditIcon
                     color='primary'/>
-            </IconButton></ListItemIcon>
+            </IconButton></ListItemIcon>}
         </ListItem>
         }
 }
