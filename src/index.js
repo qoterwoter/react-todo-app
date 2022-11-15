@@ -61,6 +61,11 @@ class App extends React.Component {
         const todos = this.state.todos
         return (
             <Grid container spacing={4} columns={13} sx={{margin:'5px 10px'}}> 
+                <Grid item xs={13}><Form 
+                    todoTitle={this.state.todoTitle}
+                    onTitleChange={this.onTitleChange}
+                    handleSubmit={this.handleSubmit}
+                /></Grid>
                 {todos.length > 0 ? 
                 <Grid item xs={6}><TodoList
                     title={"Список задач"}
@@ -79,11 +84,6 @@ class App extends React.Component {
                     isList={false}
                 /></Grid>
                 : null}
-                <Grid item xs={13}><Form 
-                    todoTitle={this.state.todoTitle}
-                    onTitleChange={this.onTitleChange}
-                    handleSubmit={this.handleSubmit}
-                /></Grid>
             </Grid>
         )
     }
