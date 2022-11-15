@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.sass';
-import {TodoList} from './list'
+import {TodoList} from './List/list'
 import {Form} from './form'
 import { Grid } from '@mui/material';
 
@@ -42,7 +42,6 @@ class App extends React.Component {
         this.setState({todos:this.state.todos.map((todo,index)=>{
             return id === index ? newTodo : todo
         })})
-        console.log(id,newTodo)
     }
     render() {
         const deleted = this.state.deletedTodos
