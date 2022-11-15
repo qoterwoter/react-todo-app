@@ -3,6 +3,7 @@ import { Typography, ListItem, ListItemIcon, ListItemText, IconButton, TextField
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 
 export class ItemOfList extends React.Component {
     constructor(props) {
@@ -47,10 +48,12 @@ export class ItemOfList extends React.Component {
                     variant='contained' 
                     color='success'/>
             }</IconButton></ListItemIcon>
-            {isList && <ListItemIcon><IconButton 
+            { isList && <ListItemIcon><IconButton 
                 onClick={()=>{this.handleTurnEdit(index)}}>
-                <EditIcon
-                    color='primary'/>
+                { isEdit[index] ? 
+                    <EditIcon color='primary'/> : 
+                    <SaveIcon color='success'/>
+                }
             </IconButton></ListItemIcon>}
         </ListItem>
         }

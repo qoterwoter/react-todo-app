@@ -11,20 +11,28 @@ class App extends React.Component {
         this.state = { 
             todos: ['Задача','Ещё одна задача','И ещё одна задача'],
             deletedTodos:[],
-            todoTitle: ''
+            todoTitle: '',
+            isEdit:[]
         }
         this.onTitleChange = this.onTitleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
         this.handleRestore = this.handleRestore.bind(this)
         this.handleRename = this.handleRename.bind(this)
+        this.handleTurnEdit = this.handleTurnEdit.bind(this)
+    }
+    componentDidMount() {
+        this.setState({isEdit:this.state.todos.map(val=>true)})
     }
     onTitleChange(title) {
         this.setState({todoTitle:title})
     }
     handleSubmit() {
         if(this.state.todoTitle.trim()) {
-            this.setState({todos:[...this.state.todos, this.state.todoTitle],todoTitle:''})
+            this.setState({
+                todos:[...this.state.todos, this.state.todoTitle],
+                todoTitle:'',
+                isEdit:[...this.state.isEdit,true]})
         }
     }
     handleDelete(id) {
@@ -43,6 +51,11 @@ class App extends React.Component {
             return id === index ? newTodo : todo
         })})
     }
+    handleTurnEdit(index) {
+        this.setState({isEdit:this.state.isEdit.map((todo,id)=>{
+            return id === index ? !todo : todo
+        })})
+    }
     render() {
         const deleted = this.state.deletedTodos
         const todos = this.state.todos
@@ -54,6 +67,8 @@ class App extends React.Component {
                     todos={this.state.todos}
                     handleChange={this.handleDelete}
                     handleRename={this.handleRename}
+                    handleTurnEdit={this.handleTurnEdit}
+                    isEdit={this.state.isEdit}
                     isList={true}
                 /></Grid> : null}
                 {deleted.length > 0 ?

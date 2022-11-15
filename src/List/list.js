@@ -5,10 +5,6 @@ import { ItemOfList } from './listItem';
 export class TodoList extends React.Component {
     constructor(props) {
         super(props)
-
-        this.state= {
-            isEdit: this.props.todos.map(val=>true)
-        }
         
         this.handleChange = this.handleChange.bind(this)
         this.handleRename = this.handleRename.bind(this)
@@ -21,15 +17,12 @@ export class TodoList extends React.Component {
         this.props.handleRename(index,todo);
     }
     handleTurnEdit(index) {
-        this.setState({isEdit:this.state.isEdit.map((todo,id)=>{
-            return id === index ? !todo : todo
-        })})
+        this.props.handleTurnEdit(index)
     }
     render() {
         const todos = this.props.todos
-        const isEdit = this.state.isEdit
-
-        const list = todos.map(todo=>{
+        const isEdit = this.props.isEdit ? this.props.isEdit : false
+        const listItems = todos.map(todo=>{
             const index = todos.indexOf(todo)
             return <ItemOfList
                 handleTurnEdit={this.handleTurnEdit}
@@ -47,7 +40,7 @@ export class TodoList extends React.Component {
                     <Typography variant='h4'>{this.props.title}</Typography>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <List>{list}</List>
+                    <List>{listItems}</List>
                 </Grid>
             </Grid>
         )
