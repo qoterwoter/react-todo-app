@@ -13,15 +13,14 @@ export class Form extends React.Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault();
         this.props.handleSubmit(event.target.value)
     }
 
     render() {
         return(
-            <Grid container spacing={2}>
+            <Grid container spacing={2} marginBottom='8px'>
                 <Grid item xs={12}><Typography variant='h4'>Добавить задачу</Typography></Grid>
-                <Grid item xs={4}><TextField 
+                <Grid item xs={2}><TextField 
                     id='input'
                     value={this.props.todoTitle} 
                     onChange={this.handleChange}

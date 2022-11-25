@@ -23,24 +23,21 @@ export class ItemOfList extends React.Component {
     }
     render() {
         const todo = this.props.todo
-        const index = this.props.index
-        const isEdit = this.props.isEdit
-        const isList = this.props.isList
         return <ListItem
-            key={index}
+            key={todo.index}
             spacing={2}>
             <ListItemText>
                 {
-                isEdit[index] || !isList ?
-                <Typography variant='p'>{todo}</Typography> : 
+                todo.isEditable  ?
+                <Typography variant='p'>{todo.title}</Typography> : 
                 <TextField 
                     label="Введите текст задачи"
                     size='small'
-                    value={todo}
-                    onChange={(event)=>{this.handleRename(index,event.target.value)}}/>
+                    value={todo.title}
+                    onChange={(event)=>{this.handleRename(todo.index,event.target.value)}}/>
                 }
             </ListItemText>
-            <ListItemIcon><IconButton onClick={()=>{this.handleChange(index)}}>{isList ? 
+            <ListItemIcon><IconButton onClick={()=>{this.handleChange(todo.index)}}>{ todo.status==='todo' ? 
                 <DeleteIcon
                     variant='filled' 
                     color='error'/> :
@@ -48,9 +45,9 @@ export class ItemOfList extends React.Component {
                     variant='contained' 
                     color='success'/>
             }</IconButton></ListItemIcon>
-            { isList && <ListItemIcon><IconButton 
-                onClick={()=>{this.handleTurnEdit(index)}}>
-                { isEdit[index] ? 
+            { todo.status==='todo' && <ListItemIcon><IconButton 
+                onClick={()=>{this.handleTurnEdit(todo.index)}}>
+                { todo.isEditable ? 
                     <EditIcon color='primary'/> : 
                     <SaveIcon color='success'/>
                 }

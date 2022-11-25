@@ -21,25 +21,22 @@ export class TodoList extends React.Component {
     }
     render() {
         const todos = this.props.todos
-        const isEdit = this.props.isEdit ? this.props.isEdit : false
-        const listItems = todos.map(todo=>{
-            const index = todos.indexOf(todo)
+        const listItems = todos.map((todo,index)=>{
             return <ItemOfList
                 handleTurnEdit={this.handleTurnEdit}
                 handleRename={this.handleRename}
                 handleChange={this.handleChange}
-                isEdit={isEdit}
                 index={index}
                 todo={todo}
-                isList={this.props.isList}
-            />}) 
-        
+            />
+        }) 
+        const title = todos[0].status === 'todo' ? "Список задач" : "Удаленные задачи"
         return (
-            <Grid container spacing={2} sx={{background:'#f2f2f2','border-radius':'10px'}}>
+            <Grid container spacing={2} sx={{background:'#f2f2f2'}} borderRadius={'15px'}>
                 <Grid item xs={12}>
-                    <Typography variant='h4'>{this.props.title}</Typography>
+                    <Typography variant='h4'>{title}</Typography>
                 </Grid>
-                <Grid item xs={12} md={12}>
+                <Grid item xs={12}>
                     <List>{listItems}</List>
                 </Grid>
             </Grid>

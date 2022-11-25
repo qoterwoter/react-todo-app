@@ -1,18 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.sass';
-import {TodoList} from './List/list'
-import {Form} from './form'
-import { Grid } from '@mui/material';
-
+import { TodoList } from './List/list'
+import { Form } from './form'
+import { Box, Grid } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid'
 class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = { 
-            todos: ['Задача','Ещё одна задача','И ещё одна задача'],
-            deletedTodos:[],
+            // Переписать дальше в компоненты
+            todos: [{
+                index: uuidv4(),
+                title:"Задача",
+                status:"todo",
+                isEditable: true
+            }, {
+                index: uuidv4(),
+                title: "Другая задача",
+                status:"todo",
+                isEditable: true
+            }, {
+                index: uuidv4(),
+                title: "Ещё одна задача",
+                status:"todo",
+                isEditable: true
+            }],
             todoTitle: '',
-            isEdit:[]
         }
         this.onTitleChange = this.onTitleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -21,70 +35,64 @@ class App extends React.Component {
         this.handleRename = this.handleRename.bind(this)
         this.handleTurnEdit = this.handleTurnEdit.bind(this)
     }
-    componentDidMount() {
-        this.setState({isEdit:this.state.todos.map(val=>true)})
-    }
     onTitleChange(title) {
         this.setState({todoTitle:title})
     }
     handleSubmit() {
         if(this.state.todoTitle.trim()) {
             this.setState({
-                todos:[...this.state.todos, this.state.todoTitle],
+                todos:[...this.state.todos, {index:uuidv4(),title:this.state.todoTitle, status:'todo',isEditable:true,}],
                 todoTitle:'',
-                isEdit:[...this.state.isEdit,true]})
+            })
         }
+        console.log(this.state.todos)
     }
     handleDelete(id) {
-        const _todos = this.state.todos.filter((todo,index)=>id!==index);
-        this.state.deletedTodos.push(this.state.todos[id])
-        this.setState({todos:_todos})
+        this.setState({todos:this.state.todos.map(todo=>{
+            return id === todo.index ? {...todo,status:'deleted'} : todo
+        })})
     }
     handleRestore(id) {
-        this.setState({
-            todos:[...this.state.todos,this.state.deletedTodos[id]],
-            deletedTodos:[...this.state.deletedTodos.filter((todo,index)=>index!==id)]
-        })
+        this.setState({todos:this.state.todos.map(todo=>{
+            return id === todo.index ? {...todo,status:'todo'} : todo
+        })})
     }
-    handleRename(id,newTodo) {
-        this.setState({todos:this.state.todos.map((todo,index)=>{
-            return id === index ? newTodo : todo
+    handleRename(id,todoTitle) {
+        this.setState({todos:this.state.todos.map(todo=>{
+            return id === todo.index ? {...todo,title:todoTitle} : todo
         })})
     }
     handleTurnEdit(index) {
-        this.setState({isEdit:this.state.isEdit.map((todo,id)=>{
-            return id === index ? !todo : todo
+        this.setState({todos:this.state.todos.map(todo=>{
+            return index === todo.index ? {...todo,isEditable:!todo.isEditable} : todo
         })})
     }
     render() {
-        const deleted = this.state.deletedTodos
-        const todos = this.state.todos
+        const todos = this.state.todos.filter(todo=>todo.status==='todo')
+        const deleted = this.state.todos.filter(todo=>todo.status==='deleted')
         return (
-            <Grid container spacing={4} columns={13} sx={{margin:'5px 10px'}}> 
-                <Grid item xs={13}><Form 
+            <Box padding='0 32px' >
+                <Grid container spacing={4} columns={12} justifyContent='space-between'> 
+                <Grid item xs={12}><Form 
                     todoTitle={this.state.todoTitle}
                     onTitleChange={this.onTitleChange}
                     handleSubmit={this.handleSubmit}
                 /></Grid>
                 {todos.length > 0 ? 
                 <Grid item xs={6}><TodoList
-                    title={"Список задач"}
-                    todos={this.state.todos}
+                    todos={todos}
                     handleChange={this.handleDelete}
                     handleRename={this.handleRename}
                     handleTurnEdit={this.handleTurnEdit}
-                    isEdit={this.state.isEdit}
-                    isList={true}
                 /></Grid> : null}
                 {deleted.length > 0 ?
                 <Grid item xs={6}><TodoList
-                    title={"Удаленные задачи"}
                     todos={deleted}
                     handleChange={this.handleRestore}
-                    isList={false}
                 /></Grid>
                 : null}
             </Grid>
+            </Box>
         )
     }
 }
