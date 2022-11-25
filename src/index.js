@@ -11,17 +11,17 @@ class App extends React.Component {
         this.state = { 
             // Переписать дальше в компоненты
             todos: [{
-                index: uuidv4(),
+                id: uuidv4(),
                 title:"Задача",
                 status:"todo",
                 isEditable: true
             }, {
-                index: uuidv4(),
+                id: uuidv4(),
                 title: "Другая задача",
                 status:"todo",
                 isEditable: true
             }, {
-                index: uuidv4(),
+                id: uuidv4(),
                 title: "Ещё одна задача",
                 status:"todo",
                 isEditable: true
@@ -41,29 +41,29 @@ class App extends React.Component {
     handleSubmit() {
         if(this.state.todoTitle.trim()) {
             this.setState({
-                todos:[...this.state.todos, {index:uuidv4(),title:this.state.todoTitle, status:'todo',isEditable:true,}],
+                todos:[...this.state.todos, {id:uuidv4(),title:this.state.todoTitle, status:'todo',isEditable:true,}],
                 todoTitle:'',
             })
         }
     }
     handleDelete(id) {
         this.setState({todos:this.state.todos.map(todo=>{
-            return id === todo.index ? {...todo,status:'deleted'} : todo
+            return id === todo.id ? {...todo,status:'deleted'} : todo
         })})
     }
     handleRestore(id) {
         this.setState({todos:this.state.todos.map(todo=>{
-            return id === todo.index ? {...todo,status:'todo'} : todo
+            return id === todo.id ? {...todo,status:'todo'} : todo
         })})
     }
     handleRename(id,todoTitle) {
         this.setState({todos:this.state.todos.map(todo=>{
-            return id === todo.index ? {...todo,title:todoTitle} : todo
+            return id === todo.id ? {...todo,title:todoTitle} : todo
         })})
     }
-    handleTurnEdit(index) {
+    handleTurnEdit(id) {
         this.setState({todos:this.state.todos.map(todo=>{
-            return index === todo.index ? {...todo,isEditable:!todo.isEditable} : todo
+            return id === todo.id ? {...todo,isEditable:!todo.isEditable} : todo
         })})
     }
     render() {

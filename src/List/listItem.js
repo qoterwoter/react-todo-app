@@ -12,19 +12,19 @@ export class ItemOfList extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleTurnEdit = this.handleTurnEdit.bind(this)
     }
-    handleRename(index,newTodo) {
-        this.props.handleRename(index,newTodo)
+    handleRename(id,todoTitle) {
+        this.props.handleRename(id,todoTitle)
     }
-    handleChange(index) {
-        this.props.handleChange(index)
+    handleChange(id) {
+        this.props.handleChange(id)
     }
-    handleTurnEdit(index) {
-        this.props.handleTurnEdit(index)
+    handleTurnEdit(id) {
+        this.props.handleTurnEdit(id)
     }
     render() {
         const todo = this.props.todo
         return <ListItem
-            key={todo.index}
+            key={todo.id}
             spacing={2}>
             <ListItemText>
                 {
@@ -34,10 +34,10 @@ export class ItemOfList extends React.Component {
                     label="Введите текст задачи"
                     size='small'
                     value={todo.title}
-                    onChange={(event)=>{this.handleRename(todo.index,event.target.value)}}/>
+                    onChange={(event)=>{this.handleRename(todo.id,event.target.value)}}/>
                 }
             </ListItemText>
-            <ListItemIcon><IconButton onClick={()=>{this.handleChange(todo.index)}}>{ todo.status==='todo' ? 
+            <ListItemIcon><IconButton onClick={()=>{this.handleChange(todo.id)}}>{ todo.status==='todo' ? 
                 <DeleteIcon
                     variant='filled' 
                     color='error'/> :
@@ -46,7 +46,7 @@ export class ItemOfList extends React.Component {
                     color='success'/>
             }</IconButton></ListItemIcon>
             { todo.status==='todo' && <ListItemIcon><IconButton 
-                onClick={()=>{this.handleTurnEdit(todo.index)}}>
+                onClick={()=>{this.handleTurnEdit(todo.id)}}>
                 { todo.isEditable ? 
                     <EditIcon color='primary'/> : 
                     <SaveIcon color='success'/>

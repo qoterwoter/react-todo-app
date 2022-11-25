@@ -10,23 +10,22 @@ export class TodoList extends React.Component {
         this.handleRename = this.handleRename.bind(this)
         this.handleTurnEdit = this.handleTurnEdit.bind(this)
     }
-    handleChange(index) {
-        this.props.handleChange(index);
+    handleChange(id) {
+        this.props.handleChange(id);
     }
-    handleRename(index,todo) {
-        this.props.handleRename(index,todo);
+    handleRename(id,todo) {
+        this.props.handleRename(id,todo);
     }
-    handleTurnEdit(index) {
-        this.props.handleTurnEdit(index)
+    handleTurnEdit(id) {
+        this.props.handleTurnEdit(id)
     }
     render() {
         const todos = this.props.todos
-        const listItems = todos.map((todo,index)=>{
+        const listItems = todos.map((todo,id)=>{
             return <ItemOfList
                 handleTurnEdit={this.handleTurnEdit}
                 handleRename={this.handleRename}
                 handleChange={this.handleChange}
-                index={index}
                 todo={todo}
             />
         }) 
