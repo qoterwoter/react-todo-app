@@ -45,7 +45,6 @@ class App extends React.Component {
                 todoTitle:'',
             })
         }
-        console.log(this.state.todos)
     }
     handleDelete(id) {
         this.setState({todos:this.state.todos.map(todo=>{
